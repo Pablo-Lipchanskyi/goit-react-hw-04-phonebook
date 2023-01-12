@@ -1,5 +1,4 @@
 import { useState } from 'react';
-import { nanoid } from 'nanoid';
 import PropTypes from 'prop-types';
 import { Button } from 'components/Button/Button';
 import css from 'components/InputForm/inputForm.module.css'
@@ -8,17 +7,28 @@ import css from 'components/InputForm/inputForm.module.css'
 export default function ContactForm({onSubmit}) {
   const [name, setName] = useState('');
   const [number, setNumber] = useState('');
-  const [contacts, setContacts] = useState([]);
 
-  handleInputChange = event => {
-    const { name, number } = event.currentTarget
-    setContacts([{ id: nanoid(5), name: name, number:number},...contacts])
+  const handleInputChange = event => {
+    const { name, value } = event.currentTarget
+        switch (name) {
+      case 'name':
+        setName(value);
+        break;
+
+      case 'number':
+        setNumber(value);
+        break;
+
+      default:
+        return;
+    }
   }
-  handleSubmit = event => {
+  const handleSubmit = event => {
     event.preventDefault();
-    onSubmit(contacts,resetForm)
+    const state = {name,number}
+    onSubmit(state,resetForm)
   }
-  resetForm = () => {
+  const resetForm = () => {
     setName('');
     setNumber('')
   }
